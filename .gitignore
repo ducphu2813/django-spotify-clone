@@ -1,59 +1,16 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.pyc
-*.so
-*.egg-info/
-*.egg
 
-# Virtual Environment
-env/
+# Env
+.env
 venv/
-ENV/
-.venv/
-.env/
-.envrc
-*.env
 
 # Django
 db.sqlite3
-*.sqlite3
-*.log
 media/
 staticfiles/
 
-# Migrations (optional: nếu không muốn lưu vào Git)
-**/migrations/
-!*/migrations/__init__.py
-
-# IDEs
+# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# AWS or cloud settings
-*.pem
-*.key
-.aws/
-
-# S3 credentials (if using boto or similar tools)
-.boto
-
-# Docker
-*.pid
-*.pid.lock
-
-# Node (if using frontend)
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-dist/
-build/
