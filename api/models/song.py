@@ -10,7 +10,7 @@ class Song(models.Model):
         , on_delete=models.CASCADE
     )
     # Media
-    image_url = models.URLField(blank=True, null=True, help_text="Ảnh thumbnail")  # link ảnh từ Cloudinary
+    image_url = models.URLField(blank=True, null=True, help_text="Ảnh thumbnail")  # link ảnh từ AWS S3
     audio_url = models.URLField(blank=True, null=True, help_text="File âm thanh - lưu URL S3")  # link âm thanh từ AWS S3
     video_url = models.URLField(blank=True, null=True, help_text="Video đi kèm nếu có")  # link video từ AWS S3
 

@@ -41,6 +41,26 @@ INSTALLED_APPS = [
     'api'
 ]
 
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_STORAGE_BUCKET_NAME = 'test-bucket'
+AWS_S3_REGION_NAME = 'ap-southeast-2'  # Sydney
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'ACL': None,
+}
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False  # URL public
+
+DEFAULT_FILE_STORAGE = 'spotify.storages_backends.CustomS3Boto3Storage'  # đường dẫn đến class CustomS3Boto3Storage trong storages_backends.py
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
