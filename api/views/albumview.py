@@ -3,7 +3,19 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from api.models import Album
+from api.permissions import role_required
 from api.serializer import AlbumSerializer
+
+#get all albums
+@api_view(['GET'])
+@role_required(['ADMIN'])
+def get_all_albums(request):
+    albums = Album.objects.all()
+    serializer = AlbumSerializer(albums, many=True)
+    return Response(serializer.data)
+
+# get album by id
+
 
 # get all albums or add album
 @api_view(['GET', 'POST'])

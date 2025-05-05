@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^1&udk6#_g@x+69gbbg#9fv4ld%!_oz7d--#u87o-x36i7z5b$'
+from decouple import config
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api'
+    'rest_framework_simplejwt',
+    'api',
 ]
 
 AWS_ACCESS_KEY_ID = ''
@@ -60,6 +62,33 @@ DEFAULT_FILE_STORAGE = 'spotify.storages_backends.CustomS3Boto3Storage'  # đư�
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
+
+
+DEEPSEEK_API_KEY = ""
+
+
+#jwt settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # mặc định cần auth
+    )
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+}
+
+AUTH_USER_MODEL = 'api.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

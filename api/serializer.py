@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from spotify import settings
@@ -32,6 +33,16 @@ class UserSerializer(serializers.ModelSerializer):
         # Ghi đè trường role để trả về full role data
         rep['role'] = RoleSerializer(instance.role).data
         return rep
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # Hash mật khẩu nếu được cung cấp trong dữ liệu update
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])
+        return super().update(instance, validated_data)
 
 #role serializer
 class RoleSerializer(serializers.ModelSerializer):
@@ -105,3 +116,11 @@ class FavouriteSongSerializer(serializers.ModelSerializer):
     class Meta:
         model = FavouriteSong
         fields = ['id', 'user', 'song', 'song_id']
+
+
+
+#deepseek serializer
+class DeepSeekSerializer(serializers.Serializer):
+    prompt = serializers.CharField(required=True)
+    max_tokens = serializers.IntegerField(required=False, default=2048)
+    model = serializers.CharField(required=False, default="deepseek-chat")

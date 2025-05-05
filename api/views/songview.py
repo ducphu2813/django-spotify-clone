@@ -1,13 +1,16 @@
 import uuid
 
 import boto3
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
 from api.models import Song
 from api.serializer import SongSerializer
 from spotify import settings
+
+from api.permissions import role_required
 
 
 # Hàm upload file lên S3
@@ -28,81 +31,109 @@ def upload_file_to_s3(file, folder):
     file_url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{filename}"
     return file_url
 
-# get all songs or add song
-@api_view(['GET', 'POST'])
-def get_song_list(request):
-    if request.method == 'GET':
-        songs = Song.objects.all()
-        serializer = SongSerializer(songs, many=True)
-        return Response(serializer.data)
 
-    elif request.method == 'POST':
-        data = request.data.copy()
+#hàm xóa file trên S3
+def delete_file_from_s3(file_url):
+    s3 = boto3.client('s3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
 
-        if 'image_file' in request.FILES:
-            image_file = request.FILES['image_file']
-            image_url = upload_file_to_s3(image_file, 'images')
-            data['image_url'] = image_url
+    # Extract the filename from the URL
+    filename = file_url.split('/')[-1]
 
-        if 'audio_file' in request.FILES:
-            audio_file = request.FILES['audio_file']
-            audio_url = upload_file_to_s3(audio_file, 'audio')
-            data['audio_url'] = audio_url
-
-        if 'video_file' in request.FILES:
-            video_file = request.FILES['video_file']
-            video_url = upload_file_to_s3(video_file, 'videos')
-            data['video_url'] = video_url
-
-        serializer = SongSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Delete the file from S3
+    s3.delete_object(
+        Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+        Key=filename
+    )
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def get_song_by_id(request, id):
+#get all songs
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_songs(request):
+    songs = Song.objects.all()
+    serializer = SongSerializer(songs, many=True)
+    return Response(serializer.data)
+
+# get song by id
+@api_view(['GET'])
+def retrieve_song(request, id):
     try:
         song = Song.objects.get(id=id)
     except Song.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = SongSerializer(song)
+    serializer = SongSerializer(song)
+    return Response(serializer.data)
+
+# create song
+@api_view(['POST'])
+@role_required(['ADMIN'])
+def create_song(request):
+    data = request.data.copy()
+
+    if 'image_file' in request.FILES:
+        data['image_url'] = upload_file_to_s3(request.FILES['image_file'], 'images')
+
+    if 'audio_file' in request.FILES:
+        data['audio_url'] = upload_file_to_s3(request.FILES['audio_file'], 'audio')
+
+    if 'video_file' in request.FILES:
+        data['video_url'] = upload_file_to_s3(request.FILES['video_file'], 'videos')
+
+    serializer = SongSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# update song
+@api_view(['PUT'])
+@role_required('ADMIN')
+def update_song(request, id):
+    try:
+        song = Song.objects.get(id=id)
+    except Song.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    data = request.data.copy()
+
+    if 'image_file' in request.FILES:
+        data['image_url'] = upload_file_to_s3(request.FILES['image_file'], 'images')
+
+    if 'audio_file' in request.FILES:
+        data['audio_url'] = upload_file_to_s3(request.FILES['audio_file'], 'audio')
+
+    if 'video_file' in request.FILES:
+        data['video_url'] = upload_file_to_s3(request.FILES['video_file'], 'videos')
+
+    serializer = SongSerializer(song, data=data)
+    if serializer.is_valid():
+        serializer.save()
         return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'PUT':
-        data = request.data.copy()
 
-        if 'image_file' in request.FILES:
-            image_file = request.FILES['image_file']
-            image_url = upload_file_to_s3(image_file, 'images')
-            data['image_url'] = image_url
+#delete song
+@api_view(['DELETE'])
+@role_required('ADMIN')
+def delete_song(request, id):
+    try:
+        song = Song.objects.get(id=id)
+    except Song.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if 'audio_file' in request.FILES:
-            audio_file = request.FILES['audio_file']
-            audio_url = upload_file_to_s3(audio_file, 'audio')
-            data['audio_url'] = audio_url
+    song.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
-        if 'video_file' in request.FILES:
-            video_file = request.FILES['video_file']
-            video_url = upload_file_to_s3(video_file, 'videos')
-            data['video_url'] = video_url
-
-        serializer = SongSerializer(song, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        song.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 #get song by artist id
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_song_by_artist_id(request, artist_id):
     try:
         songs = Song.objects.filter(artist_id=artist_id)

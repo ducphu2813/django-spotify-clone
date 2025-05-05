@@ -3,47 +3,70 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from api.models import Playlist
+from api.permissions import role_required
 from api.serializer import PlaylistSerializer
 
 
-# get all playlists or add playlist
-@api_view(['GET', 'POST'])
-def get_playlist_list(request):
-    if request.method == 'GET':
-        playlists = Playlist.objects.all()
-        serializer = PlaylistSerializer(playlists, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = PlaylistSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#get all playlists
+@api_view(['GET'])
+@role_required('ADMIN')  # hoặc bỏ nếu bạn muốn public
+def list_playlists(request):
+    playlists = Playlist.objects.all()
+    serializer = PlaylistSerializer(playlists, many=True)
+    return Response(serializer.data)
 
 
-# get playlist by id or update playlist by id or delete playlist by id
-@api_view(['GET', 'PUT', 'DELETE'])
-def get_playlist_by_id(request, id):
+# get playlist by id
+@api_view(['GET'])
+@role_required(['ADMIN', 'USER'])
+def retrieve_playlist(request, id):
     try:
         playlist = Playlist.objects.get(id=id)
     except Playlist.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = PlaylistSerializer(playlist)
+    serializer = PlaylistSerializer(playlist)
+    return Response(serializer.data)
+
+
+#create playlist
+@api_view(['POST'])
+@role_required(['ADMIN', 'USER'])
+def create_playlist(request):
+    serializer = PlaylistSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#update playlist
+@api_view(['PUT'])
+@role_required(['ADMIN', 'USER'])
+def update_playlist(request, id):
+    try:
+        playlist = Playlist.objects.get(id=id)
+    except Playlist.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PlaylistSerializer(playlist, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
         return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'PUT':
-        serializer = PlaylistSerializer(playlist, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
-        playlist.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
+#delete playlist
+@api_view(['DELETE'])
+@role_required(['ADMIN', 'USER'])
+def delete_playlist(request, id):
+    try:
+        playlist = Playlist.objects.get(id=id)
+    except Playlist.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    playlist.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # get playlist by user id
