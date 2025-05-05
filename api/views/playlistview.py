@@ -18,7 +18,7 @@ def list_playlists(request):
 
 # get playlist by id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def retrieve_playlist(request, id):
     try:
         playlist = Playlist.objects.get(id=id)
@@ -31,7 +31,7 @@ def retrieve_playlist(request, id):
 
 #create playlist
 @api_view(['POST'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def create_playlist(request):
     serializer = PlaylistSerializer(data=request.data)
     if serializer.is_valid():
@@ -39,9 +39,10 @@ def create_playlist(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 #update playlist
 @api_view(['PUT'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def update_playlist(request, id):
     try:
         playlist = Playlist.objects.get(id=id)
@@ -58,7 +59,7 @@ def update_playlist(request, id):
 
 #delete playlist
 @api_view(['DELETE'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def delete_playlist(request, id):
     try:
         playlist = Playlist.objects.get(id=id)
@@ -71,12 +72,12 @@ def delete_playlist(request, id):
 
 # get playlist by user id
 @api_view(['GET'])
+@role_required('ADMIN', 'USER')
 def get_playlist_by_user_id(request, user_id):
     try:
         playlists = Playlist.objects.filter(user_id=user_id)
     except Playlist.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = PlaylistSerializer(playlists, many=True)
-        return Response(serializer.data)
+    serializer = PlaylistSerializer(playlists, many=True)
+    return Response(serializer.data)

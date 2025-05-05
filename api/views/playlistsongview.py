@@ -8,7 +8,7 @@ from api.serializer import PlaylistSongSerializer
 
 #get all playlist songs
 @api_view(['GET'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def list_playlist_songs(request):
     playlist_songs = PlaylistSong.objects.all()
     serializer = PlaylistSongSerializer(playlist_songs, many=True)
@@ -17,7 +17,7 @@ def list_playlist_songs(request):
 
 # get playlist song by id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def retrieve_playlist_song(request, id):
     try:
         playlist_song = PlaylistSong.objects.get(id=id)
@@ -30,7 +30,7 @@ def retrieve_playlist_song(request, id):
 
 #create playlist song
 @api_view(['POST'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def add_song_to_playlist(request):
     serializer = PlaylistSongSerializer(data=request.data)
     if serializer.is_valid():
@@ -41,7 +41,7 @@ def add_song_to_playlist(request):
 
 # update playlist song
 @api_view(['PUT'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def update_playlist_song(request, id):
     try:
         playlist_song = PlaylistSong.objects.get(id=id)
@@ -57,7 +57,7 @@ def update_playlist_song(request, id):
 
 # delete playlist song
 @api_view(['DELETE'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def delete_playlist_song(request, id):
     try:
         playlist_song = PlaylistSong.objects.get(id=id)
@@ -70,12 +70,12 @@ def delete_playlist_song(request, id):
 
 # get playlist song by playlist id
 @api_view(['GET'])
+@role_required('ADMIN', 'USER')
 def get_playlist_song_by_playlist_id(request, playlist_id):
     try:
         playlist_songs = PlaylistSong.objects.filter(playlist_id=playlist_id)
     except PlaylistSong.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = PlaylistSongSerializer(playlist_songs, many=True)
-        return Response(serializer.data)
+    serializer = PlaylistSongSerializer(playlist_songs, many=True)
+    return Response(serializer.data)

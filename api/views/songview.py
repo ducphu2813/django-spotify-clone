@@ -59,6 +59,7 @@ def list_songs(request):
 
 # get song by id
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def retrieve_song(request, id):
     try:
         song = Song.objects.get(id=id)
@@ -140,6 +141,5 @@ def get_song_by_artist_id(request, artist_id):
     except Song.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = SongSerializer(songs, many=True)
-        return Response(serializer.data)
+    serializer = SongSerializer(songs, many=True)
+    return Response(serializer.data)

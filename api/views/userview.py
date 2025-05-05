@@ -30,7 +30,7 @@ def retrieve_user(request, id):
 
 #add user
 @api_view(['POST'])
-@role_required('ADMIN')
+@role_required('ADMIN', 'USER')
 def create_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():

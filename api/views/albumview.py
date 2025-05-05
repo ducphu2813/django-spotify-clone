@@ -8,7 +8,7 @@ from api.serializer import AlbumSerializer
 
 #get all albums
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def list_albums(request):
     albums = Album.objects.all()
     serializer = AlbumSerializer(albums, many=True)
@@ -16,7 +16,7 @@ def list_albums(request):
 
 # get album by id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def retrieve_album(request, id):
     try:
         album = Album.objects.get(id=id)
@@ -68,7 +68,7 @@ def delete_album(request, id):
 
 # get album by artist id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def get_albums_by_artist_id(request, artist_id):
     albums = Album.objects.filter(artist_id=artist_id)
     serializer = AlbumSerializer(albums, many=True)

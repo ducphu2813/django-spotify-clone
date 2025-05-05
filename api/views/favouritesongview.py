@@ -75,6 +75,5 @@ def get_favourite_song_by_user_id(request, user_id):
     except FavouriteSong.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = FavouriteSongSerializer(favourite_songs, many=True)
-        return Response(serializer.data)
+    serializer = FavouriteSongSerializer(favourite_songs, many=True)
+    return Response(serializer.data)
