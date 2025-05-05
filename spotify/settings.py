@@ -41,8 +41,22 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'api',
-    'corsheaders'
+    'corsheaders',
+    'channels',
+    'chat'
 ]
+
+ASGI_APPLICATION = 'spotify.asgi.application'
+
+# Redis cho Django Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Redis phải chạy tại đây
+        },
+    },
+}
 
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''

@@ -13,9 +13,9 @@ from .playlistview import list_playlists, retrieve_playlist, create_playlist, up
 
 from .playlistsongview import list_playlist_songs, retrieve_playlist_song, add_song_to_playlist, update_playlist_song, delete_playlist_song, get_playlist_song_by_playlist_id
 
-from .albumview import get_album_list, get_album_by_id, get_album_by_artist_id
+from .albumview import list_albums, retrieve_album, create_album, update_album, delete_album, get_albums_by_artist_id
 
-from .albumsongview import get_album_song_list, get_album_song_by_id, get_album_song_by_album_id
+from .albumsongview import list_album_songs, retrieve_album_song, create_album_song, update_album_song, delete_album_song, get_album_songs_by_album_id
 
 from .deepseekview import deepseek_chat
 

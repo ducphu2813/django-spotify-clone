@@ -1,0 +1,119 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english,vietnamese]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{BÁO CÁO ĐỒ ÁN \\[1em] Spotify API Clone}
+\author{Nhóm ...}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\chapter*{Lời mở đầu}
+\addcontentsline{toc}{chapter}{Lời mở đầu}
+% Viết phần giới thiệu lý do, mục tiêu thực hiện
+
+\chapter{Cơ sở lý thuyết}
+\section{Tổng quan về API và RESTful API}
+\section{Các công nghệ sử dụng}
+\begin{itemize}
+    \item \textbf{Django REST Framework}: mô tả...
+    \item \textbf{PostgreSQL}: hệ quản trị CSDL quan hệ...
+    \item \textbf{AWS S3}: dùng để lưu trữ hình ảnh, video/audio...
+    \item \textbf{JWT}: xác thực và phân quyền người dùng...
+\end{itemize}
+\section{Môi trường phát triển}
+\begin{itemize}
+    \item Python 3.10, Django 4.x
+    \item Docker, Docker Compose
+    \item Postman
+\end{itemize}
+
+\chapter{Mô hình và kiến trúc ứng dụng}
+\section{Mô hình tổng thể}
+% Vẽ sơ đồ kiến trúc microservice nếu có (có thể là client - gateway - service - DB)
+\includegraphics[H]{images/system_architecture.png}
+\section{Cấu trúc mã nguồn}
+% Liệt kê các thư mục như models, serializers, views, urls, utils
+\section{Mô hình cơ sở dữ liệu}
+\includegraphics[H]{images/db_schema.png}
+% ERD database
+\section{Sơ đồ luồng xử lý (flowchart)}
+\includegraphics[H]{images/flowchart.png}
+% Các sơ đồ như: đăng ký / đăng nhập / tạo bài hát / nghe bài hát / thêm vào playlist...
+
+\chapter{Thiết kế Cơ sở Dữ liệu}
+\section{Các bảng dữ liệu chính}
+\begin{itemize}
+    \item \texttt{User}
+    \item \texttt{Song}
+    \item \texttt{Artist}
+    \item \texttt{Album}
+    \item \texttt{Playlist}
+    \item \texttt{FavouriteSong}, \texttt{PlaylistSong}, \texttt{AlbumSong}
+\end{itemize}
+% Mô tả bảng, quan hệ khóa chính / khóa ngoại
+
+\chapter{Hiện thực các chức năng}
+\section{Quản lý người dùng}
+\section{CRUD bài hát (Song)}
+\section{Playlist - Thêm/xóa bài hát}
+\section{Yêu thích bài hát (Favourite)}
+\section{Album và các bài hát trong album}
+% Đưa các đoạn code chính hoặc đoạn highlight (dùng \lstlisting)
+
+\chapter{Giao diện (nếu có frontend / dùng Swagger / Postman)}
+\includegraphics[H]{images/swagger_example.png}
+\includegraphics[H]{images/postman_example.png}
+% Giao diện APIs hoặc frontend người dùng nếu có
+
+\chapter{Cài đặt và triển khai}
+\section{Yêu cầu hệ thống}
+\begin{itemize}
+    \item Python 3.x
+    \item Docker, Docker Compose
+    \item PostgreSQL, AWS S3
+\end{itemize}
+\section{Hướng dẫn cài đặt}
+\begin{enumerate}
+    \item Clone repo
+    \item Tạo môi trường ảo
+    \item Cài đặt các package
+    \item Chạy docker compose
+\end{enumerate}
+\section{Kiểm thử API}
+% Trình bày quy trình kiểm thử, ảnh chụp màn hình
+
+\chapter{Phân công nhiệm vụ nhóm}
+\begin{tabular}{|c|c|c|}
+\hline
+STT & Họ tên & Nhiệm vụ \\
+\hline
+1 & Nguyễn Văn A & Xây dựng API người dùng \\
+2 & Trần Thị B & Quản lý bài hát và upload AWS S3 \\
+3 & Lê Văn C & Thiết kế database và playlist \\
+4 & Phạm Thị D & Viết báo cáo, kiểm thử API \\
+\hline
+\end{tabular}
+
+\chapter{Kết luận}
+% Những gì đã đạt được, có thể cải thiện, hướng phát triển
+
+\chapter{Tài liệu tham khảo}
+\begin{itemize}
+    \item Django REST Framework Docs: \url{https://www.django-rest-framework.org/}
+    \item PostgreSQL Docs: \url{https://www.postgresql.org/docs/}
+    \item AWS S3 Guide: \url{https://docs.aws.amazon.com/s3/}
+    \item JWT Guide: \url{https://jwt.io/introduction}
+\end{itemize}
+
+\end{document}

@@ -22,10 +22,10 @@ from api.views import list_playlists, retrieve_playlist, create_playlist, update
 from api.views import list_playlist_songs, retrieve_playlist_song, add_song_to_playlist, update_playlist_song, delete_playlist_song, get_playlist_song_by_playlist_id
 
 #album
-from api.views import get_album_list, get_album_by_id, get_album_by_artist_id
+from api.views import list_albums, retrieve_album, create_album, update_album, delete_album, get_albums_by_artist_id
 
 #albumsong
-from api.views import get_album_song_list, get_album_song_by_id, get_album_song_by_album_id
+from api.views import list_album_songs, retrieve_album_song, create_album_song, update_album_song, delete_album_song, get_album_songs_by_album_id
 
 ## DeepSeek API
 from api.views.deepseekview import deepseek_chat
@@ -99,16 +99,22 @@ urlpatterns = [
 
 
     #album urls
-    path('album', get_album_list, name='get_album_list'),
-    path('album/<int:id>', get_album_by_id, name='get_album_by_id'),
-    path('album/artist/<int:artist_id>', get_album_by_artist_id, name='get_album_by_artist_id'),
+    path('album', list_albums, name='get_album_list'),
+    path('album/<int:id>', retrieve_album, name='get_album_by_id'),
+    path('album', create_album, name='create_album'),
+    path('album/<int:id>', update_album, name='update_album'),
+    path('album/<int:id>', delete_album, name='delete_album'),
+    path('album/artist/<int:artist_id>', get_albums_by_artist_id, name='get_album_by_artist_id'),
 
 
 
     #albumsong urls
-    path('album-song', get_album_song_list, name='get_album_song_list'),
-    path('album-song/<int:id>', get_album_song_by_id, name='get_album_song_by_id'),
-    path('album-song/album/<int:album_id>', get_album_song_by_album_id, name='get_album_song_by_album_id'),
+    path('album-song', list_album_songs, name='get_album_song_list'),
+    path('album-song/<int:id>', retrieve_album_song, name='get_album_song_by_id'),
+    path('album-song', create_album_song, name='create_album_song'),
+    path('album-song/<int:id>', update_album_song, name='update_album_song'),
+    path('album-song/<int:id>', delete_album_song, name='delete_album_song'),
+    path('album-song/album/<int:album_id>', get_album_songs_by_album_id, name='get_album_song_by_album_id'),
 
 
     # DeepSeek API
