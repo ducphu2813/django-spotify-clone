@@ -36,84 +36,82 @@ from api.views.authview import login_view
 #
 urlpatterns = [
 
-    #role urls
+    # role urls
     path('role', list_roles, name='get_role_list'),
     path('role/<int:id>', retrieve_role, name='get_role_by_id'),
-    path('role', create_role, name='create_role'),
-    path('role/<int:id>', update_role, name='update_role'),
-    path('role/<int:id>', delete_role, name='delete_role'),
+    path('role/create', create_role, name='create_role'),
+    path('role/<int:id>/update', update_role, name='update_role'),
+    path('role/<int:id>/delete', delete_role, name='delete_role'),
 
-
-    #user urls
+    # user urls
     path('user', list_users, name='get_user_list'),
     path('user/<int:id>', retrieve_user, name='get_user_by_id'),
-    path('user', create_user, name='create_user'),
-    path('user/<int:id>', update_user, name='update_user'),
-    path('user/<int:id>', delete_user, name='delete_user'),
+    path('user/create', create_user, name='create_user'),
+    path('user/<int:id>/update', update_user, name='update_user'),
+    path('user/<int:id>/delete', delete_user, name='delete_user'),
 
-
-    #artist urls
+    # artist urls
     path('artist', list_artists, name='get_artist_list'),
     path('artist/<int:id>', retrieve_artist, name='get_artist_by_id'),
-    path('artist', create_artist, name='create_artist'),
-    path('artist/<int:id>', update_artist, name='update_artist'),
-    path('artist/<int:id>', delete_artist, name='delete_artist'),
+    path('artist/create', create_artist, name='create_artist'),
+    path('artist/<int:id>/update', update_artist, name='update_artist'),
+    path('artist/<int:id>/delete', delete_artist, name='delete_artist'),
     path('artist/user/<int:user_id>', get_artist_by_user_id, name='get_artist_by_user_id'),
+
 
 
     # song urls
     path('song', list_songs, name='get_song_list'),
     path('song/<int:id>', retrieve_song, name='get_song_by_id'),
-    path('song', create_song, name='create_song'),
-    path('song/<int:id>', update_song, name='update_song'),
-    path('song/<int:id>', delete_song, name='delete_song'),
+    path('song/create', create_song, name='create_song'),
+    path('song/<int:id>/update', update_song, name='update_song'),
+    path('song/<int:id>/delete', delete_song, name='delete_song'),
     path('song/artist/<int:artist_id>', get_song_by_artist_id, name='get_song_by_artist_id'),
 
 
-    #favourite song urls
+
+    # favourite song urls
     path('favourite-song', list_favourite_songs, name='get_favourite_song_list'),
     path('favourite-song/<int:id>', retrieve_favourite_song, name='get_favourite_song_by_id'),
-    path('favourite-song', create_favourite_song, name='create_favourite_song'),
-    path('favourite-song/<int:id>', update_favourite_song, name='update_favourite_song'),
-    path('favourite-song/<int:id>', delete_favourite_song, name='delete_favourite_song'),
+    path('favourite-song/create', create_favourite_song, name='create_favourite_song'),
+    path('favourite-song/<int:id>/update', update_favourite_song, name='update_favourite_song'),
+    path('favourite-song/<int:id>/delete', delete_favourite_song, name='delete_favourite_song'),
     path('favourite-song/user/<int:user_id>', get_favourite_song_by_user_id, name='get_favourite_song_by_user_id'),
 
 
-
-    #playlist urls
+    # playlist urls
     path('playlist', list_playlists, name='get_playlist_list'),
     path('playlist/<int:id>', retrieve_playlist, name='get_playlist_by_id'),
-    path('playlist', create_playlist, name='create_playlist'),
-    path('playlist/<int:id>', update_playlist, name='update_playlist'),
-    path('playlist/<int:id>', delete_playlist, name='delete_playlist'),
+    path('playlist/create', create_playlist, name='create_playlist'),
+    path('playlist/<int:id>/update', update_playlist, name='update_playlist'),
+    path('playlist/<int:id>/delete', delete_playlist, name='delete_playlist'),
     path('playlist/user/<int:user_id>', get_playlist_by_user_id, name='get_playlist_by_user_id'),
 
 
-    #playlist song urls
+    # playlist song urls
     path('playlist-song', list_playlist_songs, name='get_playlist_song_list'),
     path('playlist-song/<int:id>', retrieve_playlist_song, name='get_playlist_song_by_id'),
-    path('playlist-song', add_song_to_playlist, name='add_song_to_playlist'),
-    path('playlist-song/<int:id>', update_playlist_song, name='update_playlist_song'),
-    path('playlist-song/<int:id>', delete_playlist_song, name='delete_playlist_song'),
+    path('playlist-song/create', add_song_to_playlist, name='add_song_to_playlist'),
+    path('playlist-song/<int:id>/update', update_playlist_song, name='update_playlist_song'),
+    path('playlist-song/<int:id>/delete', delete_playlist_song, name='delete_playlist_song'),
     path('playlist-song/playlist/<int:playlist_id>', get_playlist_song_by_playlist_id, name='get_playlist_song_by_playlist_id'),
 
 
-    #album urls
+    # album urls
     path('album', list_albums, name='get_album_list'),
     path('album/<int:id>', retrieve_album, name='get_album_by_id'),
-    path('album', create_album, name='create_album'),
-    path('album/<int:id>', update_album, name='update_album'),
-    path('album/<int:id>', delete_album, name='delete_album'),
+    path('album/create', create_album, name='create_album'),
+    path('album/<int:id>/update', update_album, name='update_album'),
+    path('album/<int:id>/delete', delete_album, name='delete_album'),
     path('album/artist/<int:artist_id>', get_albums_by_artist_id, name='get_album_by_artist_id'),
 
 
-
-    #albumsong urls
+    # album song urls
     path('album-song', list_album_songs, name='get_album_song_list'),
     path('album-song/<int:id>', retrieve_album_song, name='get_album_song_by_id'),
-    path('album-song', create_album_song, name='create_album_song'),
-    path('album-song/<int:id>', update_album_song, name='update_album_song'),
-    path('album-song/<int:id>', delete_album_song, name='delete_album_song'),
+    path('album-song/create', create_album_song, name='create_album_song'),
+    path('album-song/<int:id>/update', update_album_song, name='update_album_song'),
+    path('album-song/<int:id>/delete', delete_album_song, name='delete_album_song'),
     path('album-song/album/<int:album_id>', get_album_songs_by_album_id, name='get_album_song_by_album_id'),
 
 
