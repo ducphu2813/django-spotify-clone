@@ -16,7 +16,7 @@ def list_favourite_songs(request):
 
 #get favourite song by id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def retrieve_favourite_song(request, id):
     try:
         favourite_song = FavouriteSong.objects.get(id=id)
@@ -29,7 +29,7 @@ def retrieve_favourite_song(request, id):
 
 #create favourite song
 @api_view(['POST'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def create_favourite_song(request):
     serializer = FavouriteSongSerializer(data=request.data)
     if serializer.is_valid():
@@ -40,7 +40,7 @@ def create_favourite_song(request):
 
 #update favourite song
 @api_view(['PUT'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def update_favourite_song(request, id):
     try:
         favourite_song = FavouriteSong.objects.get(id=id)
@@ -55,7 +55,7 @@ def update_favourite_song(request, id):
 
 #delete favourite song
 @api_view(['DELETE'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def delete_favourite_song(request, id):
     try:
         favourite_song = FavouriteSong.objects.get(id=id)
@@ -68,7 +68,7 @@ def delete_favourite_song(request, id):
 
 #get favourite song by user id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def get_favourite_song_by_user_id(request, user_id):
     try:
         favourite_songs = FavouriteSong.objects.filter(user_id=user_id)

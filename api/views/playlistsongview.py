@@ -55,12 +55,12 @@ def update_playlist_song(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# delete playlist song
+# delete song from playlist
 @api_view(['DELETE'])
 @role_required('ADMIN', 'USER')
-def delete_playlist_song(request, id):
+def delete_playlist_song(request, playlist_id, song_id):
     try:
-        playlist_song = PlaylistSong.objects.get(id=id)
+        playlist_song = PlaylistSong.objects.get(playlist_id=playlist_id, song_id=song_id)
     except PlaylistSong.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

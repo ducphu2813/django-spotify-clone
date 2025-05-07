@@ -71,7 +71,7 @@ def retrieve_song(request, id):
 
 # create song
 @api_view(['POST'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def create_song(request):
     data = request.data.copy()
 

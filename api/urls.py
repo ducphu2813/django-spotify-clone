@@ -93,7 +93,7 @@ urlpatterns = [
     path('playlist-song/<int:id>', retrieve_playlist_song, name='get_playlist_song_by_id'),
     path('playlist-song/create', add_song_to_playlist, name='add_song_to_playlist'),
     path('playlist-song/<int:id>/update', update_playlist_song, name='update_playlist_song'),
-    path('playlist-song/<int:id>/delete', delete_playlist_song, name='delete_playlist_song'),
+    path('playlist-song/playlist/<int:playlist_id>/song/<int:song_id>/delete', delete_playlist_song, name='delete_playlist_song_by_playlist_and_song'),
     path('playlist-song/playlist/<int:playlist_id>', get_playlist_song_by_playlist_id, name='get_playlist_song_by_playlist_id'),
 
 
@@ -111,7 +111,7 @@ urlpatterns = [
     path('album-song/<int:id>', retrieve_album_song, name='get_album_song_by_id'),
     path('album-song/create', create_album_song, name='create_album_song'),
     path('album-song/<int:id>/update', update_album_song, name='update_album_song'),
-    path('album-song/<int:id>/delete', delete_album_song, name='delete_album_song'),
+    path('album-song/album/<int:album_id>/song/<int:song_id>/delete', delete_album_song, name='delete_album_song_by_album_and_song'),
     path('album-song/album/<int:album_id>', get_album_songs_by_album_id, name='get_album_song_by_album_id'),
 
 

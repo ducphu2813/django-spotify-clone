@@ -8,7 +8,7 @@ from api.serializer import AlbumSongSerializer
 
 #get all album songs
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def list_album_songs(request):
     albumsongs = AlbumSong.objects.all()
     serializer = AlbumSongSerializer(albumsongs, many=True)
@@ -17,7 +17,7 @@ def list_album_songs(request):
 
 # get album song by id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def retrieve_album_song(request, id):
     try:
         albumsong = AlbumSong.objects.get(id=id)
@@ -30,7 +30,7 @@ def retrieve_album_song(request, id):
 
 # create album song
 @api_view(['POST'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def create_album_song(request):
     serializer = AlbumSongSerializer(data=request.data)
     if serializer.is_valid():
@@ -41,7 +41,7 @@ def create_album_song(request):
 
 # update album song
 @api_view(['PUT'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def update_album_song(request, id):
     try:
         albumsong = AlbumSong.objects.get(id=id)
@@ -56,12 +56,12 @@ def update_album_song(request, id):
 
 
 
-# delete album song
+# delete song from album
 @api_view(['DELETE'])
-@role_required(['ADMIN'])
-def delete_album_song(request, id):
+@role_required('ADMIN')
+def delete_album_song(request, album_id, song_id):
     try:
-        albumsong = AlbumSong.objects.get(id=id)
+        albumsong = AlbumSong.objects.get(album_id=album_id, song_id=song_id)
     except AlbumSong.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -71,7 +71,7 @@ def delete_album_song(request, id):
 
 # get album song by album id
 @api_view(['GET'])
-@role_required(['ADMIN', 'USER'])
+@role_required('ADMIN', 'USER')
 def get_album_songs_by_album_id(request, album_id):
     albumsongs = AlbumSong.objects.filter(album_id=album_id)
     serializer = AlbumSongSerializer(albumsongs, many=True)

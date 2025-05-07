@@ -29,7 +29,7 @@ def retrieve_album(request, id):
 
 #create album
 @api_view(['POST'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def create_album(request):
     serializer = AlbumSerializer(data=request.data)
     if serializer.is_valid():
@@ -39,7 +39,7 @@ def create_album(request):
 
 # update album
 @api_view(['PUT'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def update_album(request, id):
     try:
         album = Album.objects.get(id=id)
@@ -55,7 +55,7 @@ def update_album(request, id):
 
 # delete album
 @api_view(['DELETE'])
-@role_required(['ADMIN'])
+@role_required('ADMIN')
 def delete_album(request, id):
     try:
         album = Album.objects.get(id=id)
