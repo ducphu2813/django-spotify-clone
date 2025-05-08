@@ -1,16 +1,16 @@
 import uuid
+from urllib.parse import urlparse
 
 import boto3
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from api.models import Song
+from api.permissions import role_required
 from api.serializer import SongSerializer
 from spotify import settings
-
-from api.permissions import role_required
 
 
 # Hàm upload file lên S3
@@ -39,14 +39,15 @@ def delete_file_from_s3(file_url):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    # Extract the filename from the URL
-    filename = file_url.split('/')[-1]
+    # lấy tên file từ URL
+    parsed_url = urlparse(file_url)
+    key = parsed_url.path.lstrip('/')  # xóa dấu '/' đầu tiên
 
-    # Delete the file from S3
-    s3.delete_object(
-        Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-        Key=filename
-    )
+    try:
+        s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
+        print(f"Deleted from S3: {key}")
+    except Exception as e:
+        print(f"Failed to delete {key} from S3: {e}")
 
 
 #get all songs
@@ -126,6 +127,14 @@ def delete_song(request, id):
         song = Song.objects.get(id=id)
     except Song.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # xóa file trên S3 nếu có
+    if song.image_url:
+        delete_file_from_s3(song.image_url)
+    if song.audio_url:
+        delete_file_from_s3(song.audio_url)
+    if song.video_url:
+        delete_file_from_s3(song.video_url)
 
     song.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
