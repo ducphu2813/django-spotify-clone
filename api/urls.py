@@ -4,7 +4,7 @@ from django.urls import path
 from api.views import list_roles, retrieve_role, create_role, update_role, delete_role
 
 #user
-from api.views import list_users, retrieve_user, create_user, update_user, delete_user
+from api.views import list_users, retrieve_user, create_user, update_user, delete_user, get_user_by_username
 
 #artist
 from api.views import list_artists, retrieve_artist, create_artist, update_artist, delete_artist, get_artist_by_user_id
@@ -49,6 +49,7 @@ urlpatterns = [
     path('user/create', create_user, name='create_user'),
     path('user/<int:id>/update', update_user, name='update_user'),
     path('user/<int:id>/delete', delete_user, name='delete_user'),
+    path('user/username/<str:username>', get_user_by_username, name='get_user_by_username'),
 
     # artist urls
     path('artist', list_artists, name='get_artist_list'),

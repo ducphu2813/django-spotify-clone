@@ -9,7 +9,7 @@ from api.serializer import UserSerializer
 
 #get all user
 @api_view(['GET'])
-@role_required('ADMIN')
+@role_required('ADMIN', 'USER')
 def list_users(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -71,3 +71,16 @@ def delete_user(request, id):
 
     user.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+#tìm user theo username
+@api_view(['GET'])
+@role_required('ADMIN', 'USER')
+def get_user_by_username(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserSerializer(user)
+    return Response(serializer.data)

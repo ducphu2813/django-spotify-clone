@@ -1,7 +1,7 @@
 
 from .roleview import list_roles, retrieve_role, create_role, update_role, delete_role
 
-from .userview import list_users, retrieve_user, create_user, update_user, delete_user
+from .userview import list_users, retrieve_user, create_user, update_user, delete_user, get_user_by_username
 
 from .artistview import list_artists, retrieve_artist, create_artist, update_artist, delete_artist, get_artist_by_user_id
 
