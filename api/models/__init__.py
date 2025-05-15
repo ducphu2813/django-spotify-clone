@@ -9,4 +9,5 @@ from .albumsong import AlbumSong
 from .playlist import Playlist
 from .playlistsong import PlaylistSong
 from .favouritesong import FavouriteSong
+from .chat import ChatMessage
 

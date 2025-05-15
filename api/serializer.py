@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from spotify import settings
-from .models import Song, User, Role, Permission, RolePermission
+from .models import Song, User, Role, Permission, RolePermission, ChatMessage
 from .models import Artist, Album, AlbumSong, Playlist, PlaylistSong, FavouriteSong
 
 
@@ -116,6 +116,13 @@ class FavouriteSongSerializer(serializers.ModelSerializer):
     class Meta:
         model = FavouriteSong
         fields = ['id', 'user', 'song', 'song_id']
+
+
+#chat message serializer
+class ChatMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMessage
+        fields = ['id', 'sender', 'receiver', 'message', 'timestamp']
 
 
 

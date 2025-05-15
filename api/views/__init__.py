@@ -17,6 +17,8 @@ from .albumview import list_albums, retrieve_album, create_album, update_album, 
 
 from .albumsongview import list_album_songs, retrieve_album_song, create_album_song, update_album_song, delete_album_song, get_album_songs_by_album_id
 
+from .chatview import list_chat_messages
+
 from .deepseekview import deepseek_chat
 
 from .authview import login_view

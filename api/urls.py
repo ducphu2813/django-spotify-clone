@@ -27,6 +27,9 @@ from api.views import list_albums, retrieve_album, create_album, update_album, d
 #albumsong
 from api.views import list_album_songs, retrieve_album_song, create_album_song, update_album_song, delete_album_song, get_album_songs_by_album_id
 
+#chat
+from api.views import list_chat_messages
+
 ## DeepSeek API
 from api.views.deepseekview import deepseek_chat
 
@@ -114,6 +117,10 @@ urlpatterns = [
     path('album-song/<int:id>/update', update_album_song, name='update_album_song'),
     path('album-song/album/<int:album_id>/song/<int:song_id>/delete', delete_album_song, name='delete_album_song_by_album_and_song'),
     path('album-song/album/<int:album_id>', get_album_songs_by_album_id, name='get_album_song_by_album_id'),
+
+
+    #chat urls
+    path('chat/<int:sender_id>/<int:receiver_id>', list_chat_messages, name='get_chat_list'),
 
 
     # DeepSeek API
